@@ -91,11 +91,7 @@ class CategoryList(TemplateView):
     
 class RoomsList(TemplateView):
     template_name='RoomsList.html'
-    def put(self, request):
-        checkInDate=self.request.get('checkInDate')
-        checkOutDate=self.request.get('checkOutDate')
-        return super().get_context_data(request,{'checkInDate':checkInDate, 'checkOutDate':checkOutDate})
-
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         categoryId=kwargs.get('category')
