@@ -1,6 +1,4 @@
-{% extends 'base.html' %}
-
-{% block body %}
+{% extends 'base.html' %} {% block body %}
 
 <!-- ============================================================== -->
 <!-- Top header  -->
@@ -8,104 +6,119 @@
 
 <!-- ============================ Hero Banner  Start================================== -->
 
-<div class="image-cover search-header-banner" style="background:url(assets/img/airbnb-banner.jpg) no-repeat;"
-	data-overlay="6">
+<!-- ============================ Hero Banner  Start================================== -->
+{% load static %}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="/resources/demos/style.css" />
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<style>
+	#id_name {
+		border: 2px solid black;
+	}
+
+	#id_city {
+		border: 2px solid black;
+	}
+</style>
+<div class="image-cover hero-banner" style="background: {%  static 'img/banner-1.jpg' %} no-repeat" data-overlay="4">
 	<div class="container">
-		<div class="hero-search">
-			<h1 class="text-center">Book Your Hotels</h1>
-		</div>
-		<div class="full-search-2 Reveal-search Reveal-search-radius box-style mb-4">
-
-			<div class="Reveal-search-content">
-
+		<h1 class="big-header-capt capti">Find The Right Place</h1>
+		<div class="full-search-2 Reveal-search Reveal-search-radius box-style">
+			<div class="Reveal-search-content container">
 				<div class="row">
+					<form method="get" class="col d-flex">
+						<div class="col-lg-5 col-md-3 col-sm-6">
+							<div class="form-group">
+								<div class="input-with-icon">
+									<div class="ui-widget">
+										{{form.name}}
 
-
-					<div class="col-lg-3 col-md-3 col-sm-6">
-						<div class="form-group">
-							<div class="input-with-icon">
-
-								{% for i in cityList %}
-
-								<a class="btn btn-danger" href="{% url 'home' i.name %}">{{i.name}}</a>
-								{% endfor %}
-
-
-
-
-
-
-
-								<i class="theme-cl ti-briefcase"></i>
+										<i class="fas fa-hotel" style="color: #ff256b"></i>
+									</div>
+								</div>
 							</div>
 						</div>
-					</div>
+						<div class="col-lg-5 col-md-3 col-sm-6">
+							<div class="form-group">
+								<div class="input-with-icon">
+									<div class="ui-widget">
 
-					<div class="col-lg-2 col-md-2 col-sm-12">
-						<div class="form-group">
-							<a href="#" class="btn search-btn">Search</a>
+										{{form.city}}
+										<i class="theme-cl ti-target" style="color: #ff256b"></i>
+									</div>
+								</div>
+							</div>
 						</div>
-					</div>
-
+						<div class="col-lg-2 col-md-2 col-sm-12">
+							<div class="form-group">
+								<input type="submit" class="btn search-btn" value="Search">
+							</div>
+						</div>
+					</form>
 				</div>
-
 			</div>
+		</div>
+		<div class="popular-cat-list">
+			<ul>
+				<li><a href="grid-with-sidebar.html">Hotel & Spa</a></li>
+				<li><a href="grid-with-sidebar.html">Education</a></li>
+				<li><a href="grid-with-sidebar.html">Shopping</a></li>
+				<li><a href="grid-with-sidebar.html">Restaurants</a></li>
+			</ul>
 		</div>
 	</div>
 </div>
 <!-- ============================ Hero Banner End ================================== -->
 
+<!-- ============================ Hero Banner End ================================== -->
 
 <!-- =========== Start All Restaurent In Grid View =================== -->
 <section class="gray">
 	<div class="container">
-
 		<div class="row mb-3">
 			<div class="col-lg-12 col-md-12 col-sm-12">
 				<div class="shorting-wrap mb-1">
-					<h5 class="shorting-title">Search: <span class="theme-cl ml-2">507</span> Results Found</h5>
-					<div class="shorting-rights">
-						<a href="#" class="elip-btn mr-1"><i class='lni lni-grid-alt'></i></a>
-						<a href="#" class="elip-btn mr-1"><i class='lni lni-menu'></i></a>
-						<a class="elip-btn" href="javascript:void(0);" onclick="openFilterSearch()"><i
-								class='ti-filter'></i></a>
-					</div>
+					<h5 class="shorting-title">
+						Search: <span class="theme-cl ml-2">{{hotels.count}}</span> Results Found
+					</h5>
 				</div>
 			</div>
 		</div>
 
 		<div class="row">
 			<!-- Single Place -->
-			
-			{% for i in hotelsList %}
-				<div class="col-lg-4 col-md-6 col-sm-12">
-					<div class="Reveal-hotel-item">
-						<figure class="Reveal-hotel-wrap">
-							<a class="place-link" href="{% url 'CategoryList' i.id %}">
-								<img class="cover" src="{{ MEDIA_URL }}{{i.hotelImage}}" alt="room">
-							</a>
-						</figure>
-						<div class="Reveal-hotel-detail">
-							{% comment %} <span class="Reveal-Reveal-onsale-pre"><span class="Reveal-onsale-pre">45% Off</span></span> {% endcomment %}
-							<div class="Reveal-hotel-detail-left">
-								
-								<h4 class="title"><a href="booking.html">{{i.name}}</a></h4>
-								<span class="Reveal-hotel-detail-detail">
+
+			{% for i in hotels %}
+			<div class="col-lg-4 col-md-6 col-sm-12">
+				<div class="Reveal-hotel-item">
+					<figure class="Reveal-hotel-wrap">
+						<a class="place-link" href="{% url 'CategoryList' i.id %}">
+							<img class="cover" src="{{ MEDIA_URL }}{{i.hotelImage}}" alt="room" />
+						</a>
+					</figure>
+					<div class="Reveal-hotel-detail">
+						{% comment %}
+						<span class="Reveal-Reveal-onsale-pre"><span class="Reveal-onsale-pre">45% Off</span></span>
+						{% endcomment %}
+						<div class="Reveal-hotel-detail-left">
+							<h4 class="title"><a href="booking.html">{{i.name}}</a></h4>
+							<span class="Reveal-hotel-detail-detail">
 								{{i.roomCategory}}
-									</span>
-									<br>
-								<span class="Reveal-hotel-detail-detail">contectNumber:{{i.contectNumber}}</span>
-							</div>
+							</span>
+							<br />
+							<span class="Reveal-hotel-detail-detail">contectNumber:{{i.contectNumber}}</span>
 						</div>
 					</div>
 				</div>
+			</div>
 			{% endfor %}
 		</div>
 
 		<div class="row">
 			<div class="col-md-12 col-sm-12 mt-3">
 				<div class="text-center">
-
 					<div class="spinner-grow text-danger" role="status">
 						<span class="sr-only">Loading...</span>
 					</div>
@@ -115,13 +128,36 @@
 					<div class="spinner-grow text-success" role="status">
 						<span class="sr-only">Loading...</span>
 					</div>
-
 				</div>
 			</div>
 		</div>
-
 	</div>
 </section>
+{{object_list}}
+<script>
+	var citysJSON = JSON.parse("{{ cityList|safe }}".replace(/'/g, '"'));
+	var citys = [];
+	citysJSON.forEach((x) => {
+		citys.push(x);
+		console.log(x);
+	});
+
+	$("#id_city").autocomplete({
+		source: citys,
+	});
+
+	var hotelnamesJSON = JSON.parse("{{ hotelnames|safe }}".replace(/'/g, '"'));
+	var hotels = [];
+	hotelnamesJSON.forEach((x) => {
+		hotels.push(x);
+		console.log(x);
+	});
+
+	console.log(hotelnamesJSON);
+	$("#id_name").autocomplete({
+		source: hotels,
+	});
+</script>
 <!-- =========== End All Restaurant In Grid View =================== -->
 
 {% endblock body %}

@@ -1,138 +1,84 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block body %}
+<!-- ============================================================== -->
+<!-- Top header  -->
+<!-- ============================================================== -->
 
-{% block body %}
-    <!-- ============================================================== -->
-			<!-- Top header  -->
-			<!-- ============================================================== -->
-			
-			<!-- ============================ Hero Banner  Start================================== -->
-			<div class="image-cover search-header-banner" style="background:url(assets/img/airbnb-banner.jpg) no-repeat;" data-overlay="6">
-				<div class="container">
-					<div class="hero-search">
-						<h1 class="text-center">Search All Events</h1>
-					</div>
-					<div class="full-search-2 Reveal-search Reveal-search-radius box-style mb-4">
-						
-						<div class="Reveal-search-content">
-							
-							<div class="row">
-							
-								<div class="col-lg-4 col-md-4 col-sm-12 br-left-p">
-									<div class="form-group">
-										<div class="input-with-icon">
-											<input type="text" class="form-control" placeholder="Keywords...">
-											<i class="theme-cl ti-search"></i>
-										</div>
-									</div>
-								</div>
-								
-								<div class="col-lg-3 col-md-3 col-sm-12 br-left-p">
-									<div class="form-group">
-										<div class="input-with-icon">
-											<input type="text" class="form-control" placeholder="Location...">
-											<i class="theme-cl ti-target"></i>
-										</div>
-									</div>
-								</div>
-								
-								<div class="col-lg-3 col-md-3 col-sm-6">
-									<div class="form-group">
-										<div class="input-with-icon">
-											<select id="list-category" class="form-control">
-												<option value="">&nbsp;</option>
-												<option value="1">Spa & Bars</option>
-												<option value="2">Restaurants</option>
-												<option value="3">Hotels</option>
-												<option value="4">Educations</option>
-												<option value="5">Business</option>
-												<option value="6">Retail & Shops</option>
-												<option value="7">Garage & Services</option>
-											</select>
-											<i class="theme-cl ti-briefcase"></i>
-										</div>
-									</div>
-								</div>
-								
-								<div class="col-lg-2 col-md-2 col-sm-12">
-									<div class="form-group">
-										<a href="#" class="btn search-btn">Search</a>
-									</div>
-								</div>
-								
-							</div>
-							
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- ============================ Hero Banner End ================================== -->
+<!-- ============================ Hero Banner End ================================== -->
 
-			
-			<!-- =========== Start All Hotel In Grid View =================== -->
-			<section class="gray">
-				<div class="container">
-					
-					<div class="row mb-3">
-						<div class="col-lg-12 col-md-12 col-sm-12">
-							<div class="shorting-wrap mb-1">
-								<h5 class="shorting-title">Search: <span class="theme-cl ml-2">507</span> Results Found</h5>
-								<div class="shorting-rights">
-									<a href="#" class="elip-btn mr-1"><i class='lni lni-grid-alt'></i></a>
-									<a href="#" class="elip-btn mr-1"><i class='lni lni-menu'></i></a>
-									<a class="elip-btn" href="javascript:void(0);" onclick="openFilterSearch()"><i class='ti-filter'></i></a>
-								</div>
-							</div>
-						</div>
-					</div>
-					
-					<div class="row">
-						
-                        {% for i in categoryList %}
-                            
-                        
-						<!-- Single Event -->
-						<div class="col-lg-4 col-md-6 col-sm-6 mb-4">
-                            <div class="Reveal-event-grid">
-                                <a href="{% url 'RoomsList' i.id %}">
-                                    <div class="Reveal-event-header">
-                                        <img src="{{ MEDIA_URL }}{{i.imagepic}}" class="img-fluid mx-auto" alt="">
-									</div>
-								</a>
-								<div class="Reveal-event-grid-caption">
-                                    <div class="Reveal-Reveal-event-grid-caption-header">
-                                        <h4 class="Reveal-event-name"><a href="event-detail.html">{{i.name}}</a></h4>
-										
-									</div>
-									
-								</div>
-							</div>
-						</div>
-						
-						
-                        {% endfor %}
-					</div>
-					
-					{% comment %} <div class="row">
-                        <div class="col-md-12 col-sm-12 mt-3">
-                            <div class="text-center">
-                                
-                                <div class="spinner-grow text-danger" role="status">
-                                    <span class="sr-only">Loading...</span>
-								</div>
-								<div class="spinner-grow text-warning" role="status">
-                                    <span class="sr-only">Loading...</span>
-								</div>
-								<div class="spinner-grow text-success" role="status">
-								  <span class="sr-only">Loading...</span>
-								</div>
-								
-							</div>
-						</div>	
-					</div>
-					 {% endcomment %}
-				</div>
-			</section>
-			<!-- =========== End All Hotel In Grid View =================== -->
-			
+<!-- =========== Start All Hotel In Grid View =================== -->
+<section class="gray">
+  <div class="container">
+    <div class="row mb-3">
+      <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="shorting-wrap mb-1">
+          <h5 class="shorting-title">
+            Search:
+            <span class="theme-cl ml-2">{{categoryList.count}}</span> Results
+            Found
+          </h5>
+          <div class="shorting-rights">
+            <a href="#" class="elip-btn mr-1"
+              ><i class="lni lni-grid-alt"></i
+            ></a>
+            <a href="#" class="elip-btn mr-1"><i class="lni lni-menu"></i></a>
+            <a
+              class="elip-btn"
+              href="javascript:void(0);"
+              onclick="openFilterSearch()"
+              ><i class="ti-filter"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      {% for i in categoryList %}
+
+      <!-- Single Event -->
+      <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
+        <div class="Reveal-event-grid">
+          <a href="{% url 'RoomsList' i.id %}">
+            <div class="Reveal-event-header">
+              <img
+                src="{{ MEDIA_URL }}{{i.imagepic}}"
+                class="img-fluid mx-auto"
+                alt=""
+              />
+            </div>
+          </a>
+          <div class="Reveal-event-grid-caption">
+            <div class="Reveal-Reveal-event-grid-caption-header">
+              <h4 class="Reveal-event-name">
+                <a href="event-detail.html">{{i.name}}</a>
+              </h4>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% endfor %}
+    </div>
+
+    {% comment %}
+    <div class="row">
+      <div class="col-md-12 col-sm-12 mt-3">
+        <div class="text-center">
+          <div class="spinner-grow text-danger" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+          <div class="spinner-grow text-warning" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+          <div class="spinner-grow text-success" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endcomment %}
+  </div>
+</section>
+<!-- =========== End All Hotel In Grid View =================== -->
+
 {% endblock body %}
-    

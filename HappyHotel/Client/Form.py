@@ -1,5 +1,7 @@
 from django import forms
+from Rooms.models import *
 from .models import ClientUser
+import datetime
 class RagistrationForm(forms.ModelForm):
     class Meta:
         model=ClientUser
@@ -15,3 +17,19 @@ class RagistrationForm(forms.ModelForm):
         except Exception as e:
             print(e)
             print("*******************************aaa")
+
+class bookingForm(forms.Form):
+    class Meta:
+        model=Bookings
+        fields=['userId', 'room','checkInTime', 'checkOutTime']
+        widgets={
+            'checkInTime':forms.DateInput(attrs={})
+        }
+class searchCityHotelForm(forms.Form):
+    name = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}),required=False)
+    city = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}),required=False)
+    
+class checkInCheckOutForm(forms.Form):
+    today=datetime.date.today() 
+    checkInDate = forms.DateField(widget=forms.DateInput(attrs={'class':'form-control','type':'date','value':datetime.date.today()}))
+    checkOutDate = forms.DateField(widget=forms.DateInput(attrs={'class':'form-control','type':'date','value':today + datetime.timedelta(days=1)}))

@@ -5,37 +5,37 @@
 <div class="image-cover hero-banner" style="background:url({% static 'img/airbnb-banner.jpg' %}) no-repeat;">
 	<div class="container">
 		<div class="hero-search-wrap light">
-			<form action="" method="put">
-				{% csrf_token %}
-				<div class="Reveal-search-content simple-frm">
-					<div class="row">
-						<div class="col-lg-6 col-md-12 col-sm-12">
-							<div class="form-group">
-								<div class="input-with-icon">
-									<input type="hidden" name="category" ,value={{category}}>
-									<label>Check In {{checkInDate|date:"Y-m-d"}}</label>
-									<input type="date" class="form-control" name="checkInDate"
-										min="{{checkInDate|date:'Y-m-d'}}" value="{{checkInDate|date:'Y-m-d'}}">
-									<i class="lni-calendar"></i>
-								</div>
+
+			{% csrf_token %}
+			<div class="Reveal-search-content simple-frm">
+				<div class="row">
+					<div class="col-lg-6 col-md-12 col-sm-12">
+						<div class="form-group">
+							<div class="input-with-icon">
+								<input type="hidden" name="category" ,value={{category}}>
+								<label>Check In {{checkInDate|date:"Y-m-d"}}</label>
+								<input type="date" class="form-control" name="checkInDate"
+									min="{{checkInDate|date:'Y-m-d'}}" value="{{checkInDate|date:'Y-m-d'}}">
+								<i class="lni-calendar"></i>
 							</div>
 						</div>
-						<div class="col-lg-6 col-md-12 col-sm-12">
-							<div class="form-group">
-								<div class="input-with-icon">
-									<label>Check Out</label>
-									<input type="date" class="form-control" name="checkOutdate"
-										min="{{checkOutDate|date:'Y-m-d'}}" value="{{checkOutDate|date:'Y-m-d'}}">
-									<i class="lni-calendar"></i>
-								</div>
+					</div>
+					<div class="col-lg-6 col-md-12 col-sm-12">
+						<div class="form-group">
+							<div class="input-with-icon">
+								<label>Check Out</label>
+								<input type="date" class="form-control" name="checkOutDate"
+									min="{{checkOutDate|date:'Y-m-d'}}" value="{{checkOutDate|date:'Y-m-d'}}">
+								<i class="lni-calendar"></i>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="hero-search-action">
-					<a href="#" class="btn search-btn">Search Result</a>
-				</div>
-			</form>
+			</div>
+			<div class="hero-search-action">
+				<a href="#" id="datesubmit" class="btn search-btn">Search Result</a>
+			</div>
+
 		</div>
 	</div>
 </div>
@@ -44,14 +44,9 @@
 
 		<!-- Recent Listings -->
 		<div class="tab-pane fade in active show" id="recent" role="tabpanel" aria-expanded="true">
-			<div class="row">
-
+			<div class="row" id="roomList">
 				<!-- Single Listing Grid -->
-
 				{% for i in roomList %}
-
-
-
 				<div class="col-lg-4 col-md-6 col-sm-12">
 					<div class="Reveal-grid-wrapper">
 						<div class="list-badge closed"></div>
@@ -63,7 +58,7 @@
 							{% if i.id in bookingList %}
 							<a href="#" class="tag_t btn btn-danger">not avilable</a>
 							{% else %}
-							<a href="#" class="tag_t btn btn-success">book now</a>
+							<a href="{% url 'bookdetails' i.id %}" class="tag_t btn btn-success">book now</a>
 							{% endif %}
 
 							<a href="listing-detail.html" class="lup-box"><img src="{{ MEDIA_URL }}{{i.roomImage}}"
@@ -616,4 +611,5 @@
 	</div>
 
 </div>
+
 {% endblock body %}

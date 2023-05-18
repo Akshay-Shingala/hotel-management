@@ -576,7 +576,14 @@ $(function() {
 		placeholder: "Choose Category",
 		allowClear: true
 	});
-	
+	$('#list-category1').select2({
+		placeholder: "Choose Category",
+		allowClear: true
+	});
+	$('#list-category2').select2({
+		placeholder: "Choose Category",
+		allowClear: true
+	});
 	// Tour Type
 	$('#tour-type').select2({
 		placeholder: "Tour Type",
