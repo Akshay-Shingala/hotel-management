@@ -8,7 +8,7 @@
 		<div class="row">
 
 			<!-- property main detail -->
-			<div class="col-lg-8 col-md-12 col-sm-12">
+			<div class="col-lg-6 col-md-12 col-sm-12">
 
 
 
@@ -29,7 +29,7 @@
 			</div>
 
 			<!-- property Sidebar -->
-			<div class="col-lg-4 col-md-12 col-sm-12">
+			<div class="col-lg-6 col-md-12 col-sm-12">
 
 				<div class="page-sidebar">
 
@@ -49,10 +49,8 @@
 										<div class="col-lg-6 ">
 											<div class="form-group">
 												<div class="input-with-icon">
-													<label>Check In {{checkInDate|date:"Y-m-d"}}</label>
-													<input type="date" class="form-control" name="checkInDate"
-														min="{{checkInDate|date:'Y-m-d'}}"
-														value="{{checkInDate|date:'Y-m-d'}}">
+													<label>Check In </label>
+													{{form.checkInDate}}
 												</div>
 											</div>
 										</div>
@@ -60,9 +58,7 @@
 											<div class="form-group">
 												<div class="input-with-icon">
 													<label>Check Out</label>
-													<input type="date" class="form-control" name="checkOutDate"
-														min="{{checkOutDate|date:'Y-m-d'}}"
-														value="{{checkOutDate|date:'Y-m-d'}}">
+													{{form.checkOutDate}}
 												</div>
 											</div>
 										</div>

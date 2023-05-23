@@ -75,9 +75,10 @@
             <div class="nav-menus-wrapper">
               <ul class="nav-menu">
                 <li class="active">
-                  <a href="javascript:void(0);"
+                  <a href="{% url 'home' %}"
                     >Home<span class="submenu-indicator"></span
                   ></a>
+                  {% comment %}
                   <ul class="nav-dropdown nav-submenu">
                     <li><a href="index.html">Home Style 1</a></li>
                     <li><a href="home-2.html">Home Style 2</a></li>
@@ -87,6 +88,7 @@
                     <li><a href="home-6.html">Home Style 6</a></li>
                     <li><a href="Map.html">Home Map</a></li>
                   </ul>
+                  {% endcomment %} {% comment %}
                 </li>
 
                 <li>
@@ -199,8 +201,9 @@
                     <li><a href="register.html">SignUp</a></li>
                   </ul>
                 </li>
-
+                {% endcomment %} {% comment %}
                 <li><a href="contact.html">Contacts</a></li>
+                {% endcomment %}
               </ul>
 
               {% if request.session.username %}
@@ -233,6 +236,7 @@
                         will-change: transform;
                       "
                     >
+                      {% comment %}
                       <a href="dashboard.html"
                         ><i class="ti-dashboard"></i>Dashboard</a
                       >
@@ -248,12 +252,15 @@
                       <a href="wallet.html"
                         ><i class="ti-pencil-alt"></i>Wallet</a
                       >
-                      <a href="bookmark-list.html"
+                      {% endcomment %}
+                      <a href="{% url 'myBookings' %}"
                         ><i class="ti-bookmark"></i>Bookmarked Listings</a
                       >
+                      {% comment %}
                       <a class="active" href="login.html"
                         ><i class="ti-unlock"></i>Change Password</a
                       >
+                      {% endcomment %}
                       <a class="active" href="{% url 'Logout' %}"
                         ><i class="ti-lock"></i>Logout</a
                       >
@@ -535,59 +542,6 @@
         $("#booking-date-search").val("");
       });
     </script>
-    <script type="text/javascript">
-      $("#datesubmit").click(function () {
-        console.log("cl Ragistar");
-
-        let checkInDate = document.getElementsByName("checkInDate")[0].value;
-        let checkOutDate = document.getElementsByName("checkOutDate")[0].value;
-
-        $.ajax({
-          url: "{% url 'filterRoomsByDate' %}",
-          method: "GET",
-          data: { checkInDate: checkInDate, checkOutDate: checkOutDate },
-          success: function (data) {
-            if (data.status) {
-              console.log("Check");
-              console.log(data.status);
-              console.log(data.hotel);
-              console.log(data.category);
-              console.log(data.bookingList);
-              datas = JSON.parse(data.status);
-              output = "";
-              datas.forEach((i) => {
-                bookinglists = data.bookingList;
-                booked = bookinglists.includes(i.pk)
-                  ? "<a href='#' class='tag_t btn btn-danger'>not avilable</a>"
-                  : "<a href='/happy%20hotel/room%20detail/" +
-                    i.pk +
-                    "' class='tag_t btn btn-success'>book now</a>";
-                console.log(booked);
-                output +=
-                  "<div class='col-lg-4 col-md-6 col-sm-12'><div class='Reveal-grid-wrapper'><div class='list-badge closed'></div><div class='Reveal-grid-thumb'><div class='Reveal-listing-price-info'><span class='pricetag'>" +
-                  i.fields.pricePerDay +
-                  "</span></div>" +
-                  booked +
-                  "<a href='listing-detail.html' class='lup-box'><img src='{{ MEDIA_URL }}" +
-                  i.fields.roomImage +
-                  "'class='img-fluid' alt=''></a></div><div class='Reveal-grid-caption'><div class='Reveal-grid-caption-header'><h4 class='Reveal-header-title'><a href='listing-detail.html'>{{i.hotelId}}</a></h4><div class='Reveal-grid-reviews'><i class='fas fa-star filled'></i><i class='fas fa-star filled'></i><i class='fas fa-star filled'></i><i class='fas fa-star filled'></i><i class='fas fa-star'></i><span class='overall-reviews'>" +
-                  data.ategory +
-                  "</span></div></div></div><div class='Reveal-grid-footer'><div class='Reveal-grid-footer-flex'><div class='Reveal-author-caption'><div class='Reveal-author-header'><h4>" +
-                  i.fields.roomNumber +
-                  "</h4></div></div></div><div class='Reveal-grid-footer-last'><a href='listing-detail.html' class='Reveal-view-btn'></a></div></div></div></div>";
-              });
-              roomlist = document.getElementById("roomList");
-              roomlist.innerHTML = output;
-              console.log("updated");
-            } else {
-              console.log("Error");
-              console.log(data.status);
-            }
-          },
-        });
-      });
-    </script>
   </body>
-
   <!-- Mirrored from codeminifier.com/reveal-live-2/reveal/home-6.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 25 Feb 2022 06:26:53 GMT -->
 </html>

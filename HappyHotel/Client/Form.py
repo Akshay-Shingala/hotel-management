@@ -28,8 +28,20 @@ class bookingForm(forms.Form):
 class searchCityHotelForm(forms.Form):
     name = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}),required=False)
     city = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}),required=False)
-    
 class checkInCheckOutForm(forms.Form):
-    today=datetime.date.today() 
-    checkInDate = forms.DateField(widget=forms.DateInput(attrs={'class':'form-control','type':'date','value':datetime.date.today()}))
-    checkOutDate = forms.DateField(widget=forms.DateInput(attrs={'class':'form-control','type':'date','value':today + datetime.timedelta(days=1)}))
+    today=datetime.datetime.now() 
+    print(today,"today")
+    checkInDateVar=datetime.datetime(year=today.year, month=today.month, day=today.day, hour=today.hour, minute=today.minute)
+    checkOutDateVar=datetime.datetime(year=today.year, month=today.month, day=today.day+1, hour=today.hour, minute=today.minute)
+    checkInDate = forms.DateTimeField(widget=forms.DateTimeInput (attrs={'class':'form-control','type':'datetime-local','value':checkInDateVar.strftime("%Y-%m-%dT%H:%M")}),initial=checkInDateVar)
+    checkOutDate = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'class':'form-control','type':'datetime-local','value':checkOutDateVar.strftime("%Y-%m-%dT%H:%M")}),initial=checkOutDateVar)
+    
+    def __init__(self, *args, **kwargs):
+        super(checkInCheckOutForm, self).__init__(*args, **kwargs)
+        today=datetime.datetime.now() 
+        # checkInDate=datetime.datetime(year=today.year, month=today.month, day=today.day, hour=today.hour, minute=today.minute)
+        # checkOutDate=datetime.datetime(year=today.year, month=today.month, day=today.day+1, hour=today.hour, minute=today.minute)
+        # self.fields["checkInDate"].initial=checkInDate
+        # self.fields["checkOutDate"].initial=checkOutDate
+
+    

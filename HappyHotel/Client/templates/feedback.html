@@ -1,0 +1,144 @@
+{% extends 'base.html' %} {% block body %}
+{% load static %}
+<style type="text/css">
+    @font-face {
+        font-family: "FontAwesome";
+        src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff2");
+    }
+
+    ul {
+        list-style: none;
+        display: flex;
+        flex-direction: row-reverse;
+    }
+
+    ul li {
+        display: inline-block;
+    }
+
+    ul li [type="checkbox"] {
+        display: inline-block;
+        font: normal normal normal 14px/1 FontAwesome;
+        font-size: 30px;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+
+    ul li [type="checkbox"]:focus {
+        outline: 0;
+    }
+
+    ul li [type="checkbox"]:not(:checked).star:before {
+        content: "\f006";
+    }
+
+    ul li [type="checkbox"]:checked.star:before {
+        content: "\f005";
+        color: gold;
+    }
+
+    ul li:hover [type="checkbox"].star::before,
+    ul li:hover~li [type="checkbox"].star::before,
+    ul li:focus~li [type="checkbox"].star::before {
+        content: "\f005";
+        color: gold;
+    }
+</style>
+<div class="image-cover hero-banner" style="background: url({% static 'img/airbnb-banner.jpg' %}) no-repeat">
+    <div class="container row justify-content-md-center">
+        <form action="" class=" col-md-6" method="Post">
+            <div class="bg-light  rounded p-4 light">
+                {% csrf_token %}
+                <div class="hero-search dark-text p-2 text-center">
+                    <h1>Select Date</h1>
+                </div>
+                <div class=" d-flex justify-content-center m-4">
+
+                    <ul id="rating-stars">
+                        <li>
+                            <input class="star" type="checkbox" id="star1" name="star1" />
+                            <label for="star1"></label>
+                        </li>
+                        <li>
+                            <input class="star" type="checkbox" id="star2" name="star2" />
+                            <label for="star2"></label>
+                        </li>
+                        <li>
+                            <input class="star" type="checkbox" id="star3" name="star3" />
+                            <label for="star3"></label>
+                        </li>
+                        <li>
+                            <input class="star" type="checkbox" id="star4" name="star4" />
+                            <label for="star4"></label>
+                        </li>
+                        <li>
+
+                            <input class="star" type="checkbox" id="star5" name="star5" />
+                            <label for="star5"></label>
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="Reveal-search-content simple-frm p-2">
+                    <div class="row">
+                        <div class=" ">
+                            <div class="form-group">
+                                <div class="input-with-icon">
+
+                                    <input type="hidden" name="hotelId" value="{{hotelId}}" />
+                                    <label class="p-2">Message</label>
+                                    <textarea name="msg" id="" cols="60" class="form-control"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-search-action">
+                    <input type="submit" class="btn search-btn" value="Search Result" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    const checkboxes = Array.from(
+        document.querySelectorAll('#rating-stars [type="checkbox"]')
+    ).reverse();
+
+    let lastSelected = -1;
+    deselectFrom = (a, b) => {
+        for (let j = a; j < b; j++) {
+            checkboxes[j].checked = false;
+        }
+    };
+    deselectAll = () => {
+        deselectFrom(0, checkboxes.length);
+    };
+    checkboxes.forEach((checkbox, i) => {
+        checkbox.onclick = function (event) {
+            const self = event.target;
+
+            if (self.checked) {
+                //Select everything up to and including self
+                deselectAll();
+                for (let j = 0; j <= i; j++) {
+                    checkboxes[j].checked = true;
+                }
+            } else if (i === lastSelected) {
+                deselectAll();
+            } else {
+                // Keep self checked, but deselect everything after self
+                self.checked = true;
+                deselectFrom(i + 1, checkboxes.length);
+            }
+
+            lastSelected = i;
+            document.querySelector('#rating').innerText = checkboxes.filter(x => x.checked).length
+        };
+    });
+</script>
+{% endblock body %}

@@ -22,7 +22,8 @@
 		border: 2px solid black;
 	}
 </style>
-<div class="image-cover hero-banner" style="background: {%  static 'img/banner-1.jpg' %} no-repeat" data-overlay="4">
+<div class="image-cover hero-banner" style="background: url({% static 'img/banner-1.jpg' %}) no-repeat"
+	data-overlay="4">
 	<div class="container">
 		<h1 class="big-header-capt capti">Find The Right Place</h1>
 		<div class="full-search-2 Reveal-search Reveal-search-radius box-style">
@@ -44,7 +45,6 @@
 							<div class="form-group">
 								<div class="input-with-icon">
 									<div class="ui-widget">
-
 										{{form.city}}
 										<i class="theme-cl ti-target" style="color: #ff256b"></i>
 									</div>
@@ -53,20 +53,12 @@
 						</div>
 						<div class="col-lg-2 col-md-2 col-sm-12">
 							<div class="form-group">
-								<input type="submit" class="btn search-btn" value="Search">
+								<input type="submit" class="btn search-btn" value="Search" />
 							</div>
 						</div>
 					</form>
 				</div>
 			</div>
-		</div>
-		<div class="popular-cat-list">
-			<ul>
-				<li><a href="grid-with-sidebar.html">Hotel & Spa</a></li>
-				<li><a href="grid-with-sidebar.html">Education</a></li>
-				<li><a href="grid-with-sidebar.html">Shopping</a></li>
-				<li><a href="grid-with-sidebar.html">Restaurants</a></li>
-			</ul>
 		</div>
 	</div>
 </div>
@@ -81,7 +73,8 @@
 			<div class="col-lg-12 col-md-12 col-sm-12">
 				<div class="shorting-wrap mb-1">
 					<h5 class="shorting-title">
-						Search: <span class="theme-cl ml-2">{{hotels.count}}</span> Results Found
+						Search: <span class="theme-cl ml-2">{{hotels.count}}</span> Results
+						Found
 					</h5>
 				</div>
 			</div>
@@ -91,6 +84,7 @@
 			<!-- Single Place -->
 
 			{% for i in hotels %}
+
 			<div class="col-lg-4 col-md-6 col-sm-12">
 				<div class="Reveal-hotel-item">
 					<figure class="Reveal-hotel-wrap">
@@ -100,40 +94,41 @@
 					</figure>
 					<div class="Reveal-hotel-detail">
 						{% comment %}
-						<span class="Reveal-Reveal-onsale-pre"><span class="Reveal-onsale-pre">45% Off</span></span>
+						<span class="Reveal-Reveal-onsale-pre"><span class="Reveal-onsale-pre">32% Off</span></span>
 						{% endcomment %}
 						<div class="Reveal-hotel-detail-left">
+							<div class="item-rating">
+								<i class="fa fa-star {% if i.reating >= 1 %} filled {% endif %}"></i>
+								<i class="fa fa-star {% if i.reating >= 2 %} filled {% endif %}"></i>
+								<i class="fa fa-star {% if i.reating >= 3 %} filled {% endif %}"></i>
+								<i class="fa fa-star {% if i.reating >= 4 %} filled {% endif %}"></i>
+								<i class="fa fa-star {% if i.reating >= 5 %} filled {% endif %}"></i>
+								<span>(38) Reviews</span>
+							</div>
 							<h4 class="title"><a href="booking.html">{{i.name}}</a></h4>
-							<span class="Reveal-hotel-detail-detail">
-								{{i.roomCategory}}
-							</span>
-							<br />
-							<span class="Reveal-hotel-detail-detail">contectNumber:{{i.contectNumber}}</span>
+							<span class="Reveal-hotel-detail-detail"><i class="ti-location-pin"></i>{{i.city.name}},
+								{{i.city.state.name}}</span>
 						</div>
+						{% comment %}
+						<div class="Reveal-placebox">
+							<h6 class="price-title-cut">$1299</h6>
+							<h4 class="price-title">$870</h4>
+						</div>
+						{% endcomment %}
 					</div>
+				</div>
+			</div>
+			{%empty%}
+			<div class="col-md-12 mrg-top-40">
+				<div class="text-center">
+					<label class="btn btn-light btn-md rounded">No Result found</label>
 				</div>
 			</div>
 			{% endfor %}
 		</div>
-
-		<div class="row">
-			<div class="col-md-12 col-sm-12 mt-3">
-				<div class="text-center">
-					<div class="spinner-grow text-danger" role="status">
-						<span class="sr-only">Loading...</span>
-					</div>
-					<div class="spinner-grow text-warning" role="status">
-						<span class="sr-only">Loading...</span>
-					</div>
-					<div class="spinner-grow text-success" role="status">
-						<span class="sr-only">Loading...</span>
-					</div>
-				</div>
-			</div>
-		</div>
 	</div>
 </section>
-{{object_list}}
+
 <script>
 	var citysJSON = JSON.parse("{{ cityList|safe }}".replace(/'/g, '"'));
 	var citys = [];

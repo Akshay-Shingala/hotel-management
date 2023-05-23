@@ -2,14 +2,13 @@ from django.contrib import admin
 from .models import *
 
 class hotelAdmin(admin.ModelAdmin):
-    list_display=['name','state','city','roomCategoryFun','contectNumber']
+    list_display=['name','state','city','roomCategoryFun','contectNumber','reating']
     
     @admin.display(empty_value="???")
     def roomCategoryFun(self,obj):
         return " ".join([x.name+" " for x in obj.roomCategory.all()])
         
 admin.site.register(hotels,hotelAdmin)
-
 class roomCategoryAdmin(admin.ModelAdmin):
     list_display=['name']
 admin.site.register(roomCategorys,roomCategoryAdmin)
@@ -23,7 +22,7 @@ class cityAdmin(admin.ModelAdmin):
 admin.site.register(citys,cityAdmin)
 
 class BookingAdmin(admin.ModelAdmin):
-    list_display=['userId','room','checkInTime','checkOutTime']
+    list_display=['userId','room','checkInTime','checkOutTime','checkOutStatus','bookingStatus']
 
 admin.site.register(Bookings,BookingAdmin)
 
@@ -34,3 +33,7 @@ admin.site.register(rooms,roomsAdmin)
 class RoomImageAdmin(admin.ModelAdmin):
     list_display=['roomId','roomImages']
 admin.site.register(roomImages,RoomImageAdmin)
+
+class feedbackAdmin(admin.ModelAdmin):
+    list_display=['hotel','user','rating','msg']
+admin.site.register(feedback,feedbackAdmin)

@@ -1,47 +1,42 @@
-{% extends 'base.html' %}
-
-{% block body %}
-{% load static %}
-<div class="image-cover hero-banner" style="background:url({% static 'img/airbnb-banner.jpg' %}) no-repeat;">
-	<div class="container">
-		<div class="hero-search-wrap light">
-
-			{% csrf_token %}
-			<div class="Reveal-search-content simple-frm">
-				<div class="row">
-					<div class="col-lg-6 col-md-12 col-sm-12">
-						<div class="form-group">
-							<div class="input-with-icon">
-								<input type="hidden" name="category" ,value={{category}}>
-								<label>Check In {{checkInDate|date:"Y-m-d"}}</label>
-								<input type="date" class="form-control" name="checkInDate"
-									min="{{checkInDate|date:'Y-m-d'}}" value="{{checkInDate|date:'Y-m-d'}}">
-								<i class="lni-calendar"></i>
+{% extends 'base.html' %} {% block body %} {% load static %}
+<div class="image-cover hero-banner" style="background: url({% static 'img/airbnb-banner.jpg' %}) no-repeat">
+	<div class="container row">
+		<form action="" method="get">
+			<div class="bg-light co;-md-5 rounded p-4 light">
+				{% csrf_token %}
+				<div class="hero-search dark-text p-2 text-center">
+					<h1>Select Date </h1>
+				</div>
+				<div class="Reveal-search-content simple-frm p-2">
+					<div class="row">
+						<div class="col-lg-6 col-md-12 col-sm-12">
+							<div class="form-group">
+								<div class="input-with-icon">
+									<input type="hidden" name="category" ,value="{{category}}" />
+									<label class="p-2">Check In {{checkInDate|date:"Y-m-d"}}</label>
+									{{form.checkInDate}}
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="col-lg-6 col-md-12 col-sm-12">
-						<div class="form-group">
-							<div class="input-with-icon">
-								<label>Check Out</label>
-								<input type="date" class="form-control" name="checkOutDate"
-									min="{{checkOutDate|date:'Y-m-d'}}" value="{{checkOutDate|date:'Y-m-d'}}">
-								<i class="lni-calendar"></i>
+						<div class="col-lg-6 col-md-12 col-sm-12">
+							<div class="form-group">
+								<div class="input-with-icon">
+									<label class="p-2">Check Out</label>
+									{{form.checkOutDate}}
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
+				<div class="hero-search-action">
+					<input type="submit" class="btn search-btn" value="Search Result" />
+				</div>
 			</div>
-			<div class="hero-search-action">
-				<a href="#" id="datesubmit" class="btn search-btn">Search Result</a>
-			</div>
-
-		</div>
+		</form>
 	</div>
 </div>
-<div class="container">
+<div class="container mt-3">
 	<div class="tab-content">
-
 		<!-- Recent Listings -->
 		<div class="tab-pane fade in active show" id="recent" role="tabpanel" aria-expanded="true">
 			<div class="row" id="roomList">
@@ -52,21 +47,21 @@
 						<div class="list-badge closed"></div>
 						<div class="Reveal-grid-thumb">
 							<div class="Reveal-listing-price-info">
-								<span class="pricetag">${{i.pricePerDay}}</span>
+								<span class="pricetag">${% widthratio i.pricePerDay 1 object_list.days %}</span>
 							</div>
-
-							{% if i.id in bookingList %}
+							{% if i in object_list.rooms %}
 							<a href="#" class="tag_t btn btn-danger">not avilable</a>
 							{% else %}
 							<a href="{% url 'bookdetails' i.id %}" class="tag_t btn btn-success">book now</a>
 							{% endif %}
-
 							<a href="listing-detail.html" class="lup-box"><img src="{{ MEDIA_URL }}{{i.roomImage}}"
-									class="img-fluid" alt=""></a>
+									class="img-fluid" alt="" /></a>
 						</div>
 						<div class="Reveal-grid-caption">
 							<div class="Reveal-grid-caption-header">
-								<h4 class="Reveal-header-title"><a href="listing-detail.html">{{i.hotelId}}</a></h4>
+								<h4 class="Reveal-header-title">
+									<a href="listing-detail.html">{{i.hotelId}}</a>
+								</h4>
 								<div class="Reveal-grid-reviews">
 									<i class="fas fa-star filled"></i>
 									<i class="fas fa-star filled"></i>
@@ -81,18 +76,21 @@
 							<div class="Reveal-grid-footer-flex">
 								<div class="Reveal-author-caption">
 									<div class="Reveal-author-header">
-										<h4>{{i.roomNumber}}</h4>
+										<h4>Room number : {{i.roomNumber}}</h4>
 									</div>
 								</div>
 							</div>
-							<div class="Reveal-grid-footer-last">
-								<a href="listing-detail.html" class="Reveal-view-btn"></a>
-							</div>
+
 						</div>
 					</div>
 				</div>
-				{% endfor %}
-				{% comment %}
+				{%empty%}
+				<div class="col-md-12 mrg-top-40">
+					<div class="text-center">
+						<label class="btn btn-light btn-md rounded">No Result found</label>
+					</div>
+				</div>
+				{% endfor %} {% comment %}
 				<!-- Single Listing Grid -->
 				<div class="col-lg-4 col-md-6 col-sm-12">
 					<div class="Reveal-grid-wrapper">
@@ -102,13 +100,16 @@
 								<span class="pricetag">$45 - $70</span>
 							</div>
 							<a href="#" class="tag_t"><i class="ti-heart"></i>Save</a>
-							<div class="lup-category"><a href="search-with-sidebar.html">Life Style</a></div>
+							<div class="lup-category">
+								<a href="search-with-sidebar.html">Life Style</a>
+							</div>
 							<a href="listing-detail.html" class="lup-box"><img src="assets/img/l-5.jpg"
-									class="img-fluid" alt=""></a>
+									class="img-fluid" alt="" /></a>
 						</div>
 						<div class="Reveal-grid-caption">
 							<div class="Reveal-grid-caption-header">
-								<h4 class="Reveal-header-title"><a href="listing-detail.html">Blue Rare Night Bar</a>
+								<h4 class="Reveal-header-title">
+									<a href="listing-detail.html">Blue Rare Night Bar</a>
 								</h4>
 								<div class="Reveal-grid-reviews">
 									<i class="fas fa-star filled"></i>
@@ -124,7 +125,7 @@
 							<div class="Reveal-grid-footer-flex">
 								<div class="Reveal-author-caption">
 									<div class="Reveal-author-thumb">
-										<img src="assets/img/user-5.png" class="img-fluid" alt="">
+										<img src="assets/img/user-5.png" class="img-fluid" alt="" />
 									</div>
 									<div class="Reveal-author-header">
 										<h4>Washim Akram<span>10 days ago</span></h4>
@@ -148,14 +149,17 @@
 								<span class="pricetag">$45 - $70</span>
 							</div>
 							<a href="#" class="tag_t"><i class="ti-heart"></i>Save</a>
-							<div class="lup-category"><a href="search-with-sidebar.html">Music</a></div>
+							<div class="lup-category">
+								<a href="search-with-sidebar.html">Music</a>
+							</div>
 							<a href="listing-detail.html" class="lup-box"><img src="assets/img/l-6.jpg"
-									class="img-fluid" alt=""></a>
+									class="img-fluid" alt="" /></a>
 						</div>
 						<div class="Reveal-grid-caption">
 							<div class="Reveal-grid-caption-header">
-								<h4 class="Reveal-header-title"><a href="listing-detail.html">Muskan Music &amp; Light
-										Sound</a></h4>
+								<h4 class="Reveal-header-title">
+									<a href="listing-detail.html">Muskan Music &amp; Light Sound</a>
+								</h4>
 								<div class="Reveal-grid-reviews">
 									<i class="fas fa-star filled"></i>
 									<i class="fas fa-star filled"></i>
@@ -170,7 +174,7 @@
 							<div class="Reveal-grid-footer-flex">
 								<div class="Reveal-author-caption">
 									<div class="Reveal-author-thumb">
-										<img src="assets/img/user-6.png" class="img-fluid" alt="">
+										<img src="assets/img/user-6.png" class="img-fluid" alt="" />
 									</div>
 									<div class="Reveal-author-header">
 										<h4>Malti Roy<span>10 days ago</span></h4>
@@ -193,13 +197,16 @@
 								<span class="pricetag">$45 - $70</span>
 							</div>
 							<a href="#" class="tag_t"><i class="ti-heart"></i>Save</a>
-							<div class="lup-category"><a href="search-with-sidebar.html">Hotel</a></div>
+							<div class="lup-category">
+								<a href="search-with-sidebar.html">Hotel</a>
+							</div>
 							<a href="listing-detail.html" class="lup-box"><img src="assets/img/l-1.jpg"
-									class="img-fluid" alt=""></a>
+									class="img-fluid" alt="" /></a>
 						</div>
 						<div class="Reveal-grid-caption">
 							<div class="Reveal-grid-caption-header">
-								<h4 class="Reveal-header-title"><a href="listing-detail.html">2014 Bastin Drive, USA</a>
+								<h4 class="Reveal-header-title">
+									<a href="listing-detail.html">2014 Bastin Drive, USA</a>
 								</h4>
 								<div class="Reveal-grid-reviews">
 									<i class="fas fa-star filled"></i>
@@ -215,7 +222,7 @@
 							<div class="Reveal-grid-footer-flex">
 								<div class="Reveal-author-caption">
 									<div class="Reveal-author-thumb">
-										<img src="assets/img/user-1.png" class="img-fluid" alt="">
+										<img src="assets/img/user-1.png" class="img-fluid" alt="" />
 									</div>
 									<div class="Reveal-author-header">
 										<h4>Daniel Preet<span>3 days ago</span></h4>
@@ -239,14 +246,17 @@
 								<span class="pricetag">$45 - $70</span>
 							</div>
 							<a href="#" class="tag_t"><i class="ti-heart"></i>Save</a>
-							<div class="lup-category"><a href="search-with-sidebar.html">Wedding</a></div>
+							<div class="lup-category">
+								<a href="search-with-sidebar.html">Wedding</a>
+							</div>
 							<a href="listing-detail.html" class="lup-box"><img src="assets/img/l-15.jpg"
-									class="img-fluid" alt=""></a>
+									class="img-fluid" alt="" /></a>
 						</div>
 						<div class="Reveal-grid-caption">
 							<div class="Reveal-grid-caption-header">
-								<h4 class="Reveal-header-title"><a href="listing-detail.html">Mangalam Wedding
-										Panner</a></h4>
+								<h4 class="Reveal-header-title">
+									<a href="listing-detail.html">Mangalam Wedding Panner</a>
+								</h4>
 								<div class="Reveal-grid-reviews">
 									<i class="fas fa-star filled"></i>
 									<i class="fas fa-star filled"></i>
@@ -261,7 +271,7 @@
 							<div class="Reveal-grid-footer-flex">
 								<div class="Reveal-author-caption">
 									<div class="Reveal-author-thumb">
-										<img src="assets/img/user-2.png" class="img-fluid" alt="">
+										<img src="assets/img/user-2.png" class="img-fluid" alt="" />
 									</div>
 									<div class="Reveal-author-header">
 										<h4>Reema Preet<span>4 days ago</span></h4>
@@ -284,14 +294,17 @@
 								<span class="pricetag">$45 - $70</span>
 							</div>
 							<a href="#" class="tag_t"><i class="ti-heart"></i>Save</a>
-							<div class="lup-category"><a href="search-with-sidebar.html">Massage</a></div>
+							<div class="lup-category">
+								<a href="search-with-sidebar.html">Massage</a>
+							</div>
 							<a href="listing-detail.html" class="lup-box"><img src="assets/img/l-9.jpg"
-									class="img-fluid" alt=""></a>
+									class="img-fluid" alt="" /></a>
 						</div>
 						<div class="Reveal-grid-caption">
 							<div class="Reveal-grid-caption-header">
-								<h4 class="Reveal-header-title"><a href="listing-detail.html">Shruthi Spa &amp;
-										Massage</a></h4>
+								<h4 class="Reveal-header-title">
+									<a href="listing-detail.html">Shruthi Spa &amp; Massage</a>
+								</h4>
 								<div class="Reveal-grid-reviews">
 									<i class="fas fa-star filled"></i>
 									<i class="fas fa-star filled"></i>
@@ -306,7 +319,7 @@
 							<div class="Reveal-grid-footer-flex">
 								<div class="Reveal-author-caption">
 									<div class="Reveal-author-thumb">
-										<img src="assets/img/user-3.png" class="img-fluid" alt="">
+										<img src="assets/img/user-3.png" class="img-fluid" alt="" />
 									</div>
 									<div class="Reveal-author-header">
 										<h4>Daniel Joe<span>1 days ago</span></h4>
@@ -318,15 +331,14 @@
 							</div>
 						</div>
 					</div>
-				</div> {% endcomment %}
-
+				</div>
+				{% endcomment %}
 			</div>
 		</div>
 		{% comment %}
 		<!-- Featured listings -->
 		<div class="tab-pane fade" id="featured" role="tabpanel" aria-expanded="false">
 			<div class="row">
-
 				<!-- Single Listing Grid -->
 				<div class="col-lg-4 col-md-6 col-sm-12">
 					<div class="Reveal-grid-wrapper">
@@ -336,13 +348,16 @@
 								<span class="pricetag">$45 - $70</span>
 							</div>
 							<a href="#" class="tag_t"><i class="ti-heart"></i>Save</a>
-							<div class="lup-category"><a href="search-with-sidebar.html">Hotel</a></div>
+							<div class="lup-category">
+								<a href="search-with-sidebar.html">Hotel</a>
+							</div>
 							<a href="listing-detail.html" class="lup-box"><img src="assets/img/l-1.jpg"
-									class="img-fluid" alt=""></a>
+									class="img-fluid" alt="" /></a>
 						</div>
 						<div class="Reveal-grid-caption">
 							<div class="Reveal-grid-caption-header">
-								<h4 class="Reveal-header-title"><a href="listing-detail.html">2014 Bastin Drive, USA</a>
+								<h4 class="Reveal-header-title">
+									<a href="listing-detail.html">2014 Bastin Drive, USA</a>
 								</h4>
 								<div class="Reveal-grid-reviews">
 									<i class="fas fa-star filled"></i>
@@ -358,7 +373,7 @@
 							<div class="Reveal-grid-footer-flex">
 								<div class="Reveal-author-caption">
 									<div class="Reveal-author-thumb">
-										<img src="assets/img/user-1.png" class="img-fluid" alt="">
+										<img src="assets/img/user-1.png" class="img-fluid" alt="" />
 									</div>
 									<div class="Reveal-author-header">
 										<h4>Daniel Preet<span>3 days ago</span></h4>
@@ -382,14 +397,17 @@
 								<span class="pricetag">$45 - $70</span>
 							</div>
 							<a href="#" class="tag_t"><i class="ti-heart"></i>Save</a>
-							<div class="lup-category"><a href="search-with-sidebar.html">Wedding</a></div>
+							<div class="lup-category">
+								<a href="search-with-sidebar.html">Wedding</a>
+							</div>
 							<a href="listing-detail.html" class="lup-box"><img src="assets/img/l-15.jpg"
-									class="img-fluid" alt=""></a>
+									class="img-fluid" alt="" /></a>
 						</div>
 						<div class="Reveal-grid-caption">
 							<div class="Reveal-grid-caption-header">
-								<h4 class="Reveal-header-title"><a href="listing-detail.html">Mangalam Wedding
-										Panner</a></h4>
+								<h4 class="Reveal-header-title">
+									<a href="listing-detail.html">Mangalam Wedding Panner</a>
+								</h4>
 								<div class="Reveal-grid-reviews">
 									<i class="fas fa-star filled"></i>
 									<i class="fas fa-star filled"></i>
@@ -404,7 +422,7 @@
 							<div class="Reveal-grid-footer-flex">
 								<div class="Reveal-author-caption">
 									<div class="Reveal-author-thumb">
-										<img src="assets/img/user-2.png" class="img-fluid" alt="">
+										<img src="assets/img/user-2.png" class="img-fluid" alt="" />
 									</div>
 									<div class="Reveal-author-header">
 										<h4>Reema Preet<span>4 days ago</span></h4>
@@ -427,14 +445,17 @@
 								<span class="pricetag">$45 - $70</span>
 							</div>
 							<a href="#" class="tag_t"><i class="ti-heart"></i>Save</a>
-							<div class="lup-category"><a href="search-with-sidebar.html">Massage</a></div>
+							<div class="lup-category">
+								<a href="search-with-sidebar.html">Massage</a>
+							</div>
 							<a href="listing-detail.html" class="lup-box"><img src="assets/img/l-9.jpg"
-									class="img-fluid" alt=""></a>
+									class="img-fluid" alt="" /></a>
 						</div>
 						<div class="Reveal-grid-caption">
 							<div class="Reveal-grid-caption-header">
-								<h4 class="Reveal-header-title"><a href="listing-detail.html">Shruthi Spa &amp;
-										Massage</a></h4>
+								<h4 class="Reveal-header-title">
+									<a href="listing-detail.html">Shruthi Spa &amp; Massage</a>
+								</h4>
 								<div class="Reveal-grid-reviews">
 									<i class="fas fa-star filled"></i>
 									<i class="fas fa-star filled"></i>
@@ -449,7 +470,7 @@
 							<div class="Reveal-grid-footer-flex">
 								<div class="Reveal-author-caption">
 									<div class="Reveal-author-thumb">
-										<img src="assets/img/user-3.png" class="img-fluid" alt="">
+										<img src="assets/img/user-3.png" class="img-fluid" alt="" />
 									</div>
 									<div class="Reveal-author-header">
 										<h4>Daniel Joe<span>1 days ago</span></h4>
@@ -472,13 +493,16 @@
 								<span class="pricetag">$45 - $70</span>
 							</div>
 							<a href="#" class="tag_t"><i class="ti-heart"></i>Save</a>
-							<div class="lup-category"><a href="search-with-sidebar.html">Food</a></div>
+							<div class="lup-category">
+								<a href="search-with-sidebar.html">Food</a>
+							</div>
 							<a href="listing-detail.html" class="lup-box"><img src="assets/img/l-4.jpg"
-									class="img-fluid" alt=""></a>
+									class="img-fluid" alt="" /></a>
 						</div>
 						<div class="Reveal-grid-caption">
 							<div class="Reveal-grid-caption-header">
-								<h4 class="Reveal-header-title"><a href="listing-detail.html">Netshafe Pizza House</a>
+								<h4 class="Reveal-header-title">
+									<a href="listing-detail.html">Netshafe Pizza House</a>
 								</h4>
 								<div class="Reveal-grid-reviews">
 									<i class="fas fa-star filled"></i>
@@ -494,7 +518,7 @@
 							<div class="Reveal-grid-footer-flex">
 								<div class="Reveal-author-caption">
 									<div class="Reveal-author-thumb">
-										<img src="assets/img/user-4.png" class="img-fluid" alt="">
+										<img src="assets/img/user-4.png" class="img-fluid" alt="" />
 									</div>
 									<div class="Reveal-author-header">
 										<h4>Metheil<span>3 days ago</span></h4>
@@ -517,13 +541,16 @@
 								<span class="pricetag">$45 - $70</span>
 							</div>
 							<a href="#" class="tag_t"><i class="ti-heart"></i>Save</a>
-							<div class="lup-category"><a href="search-with-sidebar.html">Life Style</a></div>
+							<div class="lup-category">
+								<a href="search-with-sidebar.html">Life Style</a>
+							</div>
 							<a href="listing-detail.html" class="lup-box"><img src="assets/img/l-5.jpg"
-									class="img-fluid" alt=""></a>
+									class="img-fluid" alt="" /></a>
 						</div>
 						<div class="Reveal-grid-caption">
 							<div class="Reveal-grid-caption-header">
-								<h4 class="Reveal-header-title"><a href="listing-detail.html">Blue Rare Night Bar</a>
+								<h4 class="Reveal-header-title">
+									<a href="listing-detail.html">Blue Rare Night Bar</a>
 								</h4>
 								<div class="Reveal-grid-reviews">
 									<i class="fas fa-star filled"></i>
@@ -539,7 +566,7 @@
 							<div class="Reveal-grid-footer-flex">
 								<div class="Reveal-author-caption">
 									<div class="Reveal-author-thumb">
-										<img src="assets/img/user-5.png" class="img-fluid" alt="">
+										<img src="assets/img/user-5.png" class="img-fluid" alt="" />
 									</div>
 									<div class="Reveal-author-header">
 										<h4>Washim Akram<span>10 days ago</span></h4>
@@ -563,14 +590,17 @@
 								<span class="pricetag">$45 - $70</span>
 							</div>
 							<a href="#" class="tag_t"><i class="ti-heart"></i>Save</a>
-							<div class="lup-category"><a href="search-with-sidebar.html">Music</a></div>
+							<div class="lup-category">
+								<a href="search-with-sidebar.html">Music</a>
+							</div>
 							<a href="listing-detail.html" class="lup-box"><img src="assets/img/l-6.jpg"
-									class="img-fluid" alt=""></a>
+									class="img-fluid" alt="" /></a>
 						</div>
 						<div class="Reveal-grid-caption">
 							<div class="Reveal-grid-caption-header">
-								<h4 class="Reveal-header-title"><a href="listing-detail.html">Muskan Music &amp; Light
-										Sound</a></h4>
+								<h4 class="Reveal-header-title">
+									<a href="listing-detail.html">Muskan Music &amp; Light Sound</a>
+								</h4>
 								<div class="Reveal-grid-reviews">
 									<i class="fas fa-star filled"></i>
 									<i class="fas fa-star filled"></i>
@@ -585,7 +615,7 @@
 							<div class="Reveal-grid-footer-flex">
 								<div class="Reveal-author-caption">
 									<div class="Reveal-author-thumb">
-										<img src="assets/img/user-6.png" class="img-fluid" alt="">
+										<img src="assets/img/user-6.png" class="img-fluid" alt="" />
 									</div>
 									<div class="Reveal-author-header">
 										<h4>Malti Roy<span>10 days ago</span></h4>
@@ -598,18 +628,62 @@
 						</div>
 					</div>
 				</div>
-
 			</div>
-		</div> {% endcomment %}
-
-	</div>
-
-	<div class="col-md-12 mrg-top-40">
-		<div class="text-center">
-			<a href="full-width-listing.html" class="btn btn-light btn-md rounded">Browse More Listings</a>
 		</div>
+		{% endcomment %}
 	</div>
-
 </div>
+{% comment %}
+<script type="text/javascript">
+	$("#datesubmit").click(function () {
+		console.log("cl Ragistar");
 
-{% endblock body %}
+		let checkInDate = document.getElementsByName("checkInDate")[0].value;
+		let checkOutDate = document.getElementsByName("checkOutDate")[0].value;
+
+		$.ajax({
+			url: "{% url 'filterRoomsByDate' %}",
+			method: "GET",
+			data: { checkInDate: checkInDate, checkOutDate: checkOutDate },
+			success: function (data) {
+				if (data.status) {
+					console.log("Check");
+					console.log(data.status);
+					console.log(data.hotel);
+					console.log(data.category);
+					console.log(data.bookingList);
+					datas = JSON.parse(data.status);
+					output = "";
+					datas.forEach((i) => {
+						bookinglists = data.bookingList;
+						booked = bookinglists.includes(i.pk)
+							? "<a href='#' class='tag_t btn btn-danger'>not avilable</a>"
+							: "<a href='/happy%20hotel/room%20detail/" +
+							i.pk +
+							"' class='tag_t btn btn-success'>book now</a>";
+						console.log(booked);
+						output +=
+							"<div class='col-lg-4 col-md-6 col-sm-12'><div class='Reveal-grid-wrapper'><div class='list-badge closed'></div><div class='Reveal-grid-thumb'><div class='Reveal-listing-price-info'><span class='pricetag'>" +
+							i.fields.pricePerDay +
+							"</span></div>" +
+							booked +
+							"<a href='listing-detail.html' class='lup-box'><img src='{{ MEDIA_URL }}" +
+							i.fields.roomImage +
+							"'class='img-fluid' alt=''></a></div><div class='Reveal-grid-caption'><div class='Reveal-grid-caption-header'><h4 class='Reveal-header-title'><a href='listing-detail.html'>{{i.hotelId}}</a></h4><div class='Reveal-grid-reviews'><i class='fas fa-star filled'></i><i class='fas fa-star filled'></i><i class='fas fa-star filled'></i><i class='fas fa-star filled'></i><i class='fas fa-star'></i><span class='overall-reviews'>" +
+							data.ategory +
+							"</span></div></div></div><div class='Reveal-grid-footer'><div class='Reveal-grid-footer-flex'><div class='Reveal-author-caption'><div class='Reveal-author-header'><h4>" +
+							i.fields.roomNumber +
+							"</h4></div></div></div><div class='Reveal-grid-footer-last'><a href='listing-detail.html' class='Reveal-view-btn'></a></div></div></div></div>";
+					});
+					roomlist = document.getElementById("roomList");
+					roomlist.innerHTML = output;
+					console.log("updated");
+				} else {
+					console.log("Error");
+					console.log(data.status);
+				}
+			},
+		});
+	});
+</script>
+{% endcomment %} {% endblock body %}

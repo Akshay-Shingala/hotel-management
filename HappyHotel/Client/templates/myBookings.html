@@ -1,0 +1,89 @@
+{% extends 'base.html' %} {% block body %}
+<div class="container">
+  {% if myBookings %}
+  <table class="table table-hover container">
+    <thead>
+      <tr>
+        <th scope="col">No</th>
+        <th scope="col">Hotel</th>
+        <th scope="col">Category</th>
+        <th scope="col">city</th>
+        <th scope="col">state</th>
+        <th scope="col">check in date</th>
+        <th scope="col">check out date</th>
+        <th scope="col">Check out now</th>
+        <th scope="col">delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in myBookings %}
+      <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>{{i.room.hotelId.name}}</td>
+        <td>{{i.room.roomCategory.name}}</td>
+        <td>{{i.room.hotelId.city}}</td>
+        <td>{{i.room.hotelId.city.state.name}}</td>
+        <td>{{i.checkInTime}}</td>
+        <td>{{i.checkOutTime}}</td>
+        {% if i.allowCheckOut %}
+        <td>
+          <form action="{% url 'CheckOut' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="bookingId" value="{{i.id}}" />
+            <input type="submit" class="btn btn-success" value="CheckOut" />
+          </form>
+        </td>
+        {% else %}
+        <td>
+          <label for="" class="btn" style="background-color: gainsboro"
+            >CheckOut</label
+          >
+        </td>
+        {% endif %} {% if i.bookingStatus == "Pending" %}
+        <td>
+          <form action="" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="bookingId" value="{{i.id}}" />
+            <input type="submit" class="btn btn-danger" value="cancelled" />
+          </form>
+        </td>
+
+        {% elif i.bookingStatus == "cancelled" %}
+        <td>
+          <label for="" class="btn" style="background-color: rgb(183, 73, 73)"
+            >cancelled</label
+          >
+        </td>
+        {% elif i.bookingStatus == "expired" %}
+        <td>
+          <label for="" class="btn" style="background-color: gainsboro"
+            >expired</label
+          >
+        </td>
+        {% else %}
+        <td>
+          <label for="" class="btn" style="background-color: rgb(47, 238, 29)"
+            >Running</label
+          >
+        </td>
+        {% endif %}
+        <td>
+          <a
+            href="{% url 'feedback' i.room.hotelId.id %}"
+            class="btn btn-warning"
+            >feedback</a
+          >
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="col-md-12 mrg-top-40">
+    <div class="text-center">
+      <label class="btn btn-light btn-md rounded">No Booking found</label>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock body %}
